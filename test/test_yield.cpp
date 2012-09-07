@@ -22,7 +22,6 @@
 
 #include "test.hpp"
 #include <luabind/luabind.hpp>
-#include <boost/mpl/if.hpp>             // for if_<>::type
 
 struct test_class : counted_type<test_class>
 {
@@ -33,7 +32,7 @@ struct test_class : counted_type<test_class>
 	}
 };
 
-int f(int /*a*/)
+int f(int a)
 {
 	return 9;
 }

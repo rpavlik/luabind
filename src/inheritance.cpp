@@ -64,7 +64,7 @@ namespace
       void put(
           class_id src, class_id target, class_id dynamic_id
         , std::ptrdiff_t object_offset
-        , std::ptrdiff_t offset, int distance);
+        , std::size_t distance, std::ptrdiff_t offset);
 
       void invalidate();
 
@@ -90,7 +90,7 @@ namespace
 
   void cache::put(
       class_id src, class_id target, class_id dynamic_id
-    , std::ptrdiff_t object_offset, std::ptrdiff_t offset, int distance)
+    , std::ptrdiff_t object_offset, std::size_t distance, std::ptrdiff_t offset)
   {
       m_cache.insert(std::make_pair(
           key_type(src, target, dynamic_id, object_offset)
@@ -175,7 +175,7 @@ std::pair<void*, int> cast_graph::impl::cast(
         {
             m_cache.put(
                 src, target, dynamic_id, object_offset
-              , (char*)qe.p - (char*)p, qe.distance
+              , qe.distance, (char*)qe.p - (char*)p
             );
 
             return std::make_pair(qe.p, qe.distance);

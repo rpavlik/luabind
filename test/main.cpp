@@ -20,26 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 
+#include <iostream>
+#include <cstring>
 
-#include "test.hpp"
-
-#include <luabind/lua_include.hpp>
-
-#ifndef LUABIND_CPLUSPLUS_LUA
 extern "C"
 {
-#endif
-# include <lualib.h>
-#ifndef LUABIND_CPLUSPLUS_LUA
+    #include "lauxlib.h"
+    #include "lualib.h"
 }
-#endif
 
-#include <luabind/open.hpp>             // for open
+#include <luabind/open.hpp>
+#include "test.hpp"
 
-#include <cstring>                      // for strlen
-#include <exception>                    // for exception
-#include <iostream>                     // for operator<<, basic_ostream, etc
-#include <string>                       // for string
+extern "C" struct lua_State;
 
 void test_main(lua_State*);
 
@@ -86,7 +79,7 @@ lua_state::operator lua_State*() const
     return m_state;
 }
 
-int pcall_handler(lua_State* /*L*/)
+int pcall_handler(lua_State* L)
 {
 	return 1;
 }

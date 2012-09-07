@@ -20,54 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef LUABIND_RETURN_REFERENCE_TO_POLICY_HPP_INCLUDED
-#define LUABIND_RETURN_REFERENCE_TO_POLICY_HPP_INCLUDED
+#if !BOOST_PP_IS_ITERATING
+
+# include <luabind/detail/signature_match.hpp>
+
+#ifndef LUABIND_CALC_ARITY_HPP_INCLUDED
+#define LUABIND_CALC_ARITY_HPP_INCLUDED
+
+#define LUABIND_FIND_CONV(z,n,text) typedef typename find_conversion_policy<n + 1, Policies>::type p##n;
+#define LUABIND_CALC_ARITY(z,n,text) + BOOST_PP_CAT(p,n)::has_arg
 
 namespace luabind { namespace detail
 {
-	template<class T>
-	struct return_reference_to_converter;
+	template<int N> struct calc_arity;
 
-	template<>
-	struct return_reference_to_converter<cpp_to_lua>
-	{
-		template<class T>
-		void apply(lua_State* L, const T&)
-		{
-			lua_pushnil(L);
-		}
-	};
-
-	template<int N>
-	struct return_reference_to_policy : conversion_policy<0>
-	{
-		static void precall(lua_State*, const index_map&) {}
-		static void postcall(lua_State* L, const index_map& indices) 
-		{
-			int result_index = indices[0];
-			int ref_to_index = indices[N];
-
-			lua_pushvalue(L, ref_to_index);
-			lua_replace(L, result_index);
-		}
-
-		template<class T, class Direction>
-		struct apply
-		{
-			typedef return_reference_to_converter<Direction> type;
-		};
-	};
+	#define BOOST_PP_ITERATION_PARAMS_1 (4, (0, LUABIND_MAX_ARITY, <luabind/detail/calc_arity.hpp>, 1))
+	#include BOOST_PP_ITERATE()
 }}
 
-namespace luabind
-{
-	template<int N>
-	detail::policy_cons<detail::return_reference_to_policy<N>, detail::null_type> 
-	return_reference_to(LUABIND_PLACEHOLDER_ARG(N)) 
-	{ 
-		return detail::policy_cons<detail::return_reference_to_policy<N>, detail::null_type>(); 
-	}
-}
+#undef LUABIND_CALC_ARITY
+#undef LUABIND_FIND_CONV
 
-#endif // LUABIND_RETURN_REFERENCE_TO_POLICY_HPP_INCLUDED
+
+#endif // LUABIND_CALC_ARITY_HPP_INCLUDED
+
+#else // BOOST_PP_ITERATE
+
+	template<>
+	struct calc_arity<BOOST_PP_ITERATION()>
+	{
+		template<BOOST_PP_ENUM_PARAMS(LUABIND_MAX_ARITY, class A), class Policies>
+		static int apply(constructor<BOOST_PP_ENUM_PARAMS(LUABIND_MAX_ARITY, A)>, Policies*)
+		{
+			BOOST_PP_REPEAT(BOOST_PP_ITERATION(), LUABIND_FIND_CONV, _)
+			return 0 BOOST_PP_REPEAT(BOOST_PP_ITERATION(), LUABIND_CALC_ARITY, _);
+		}
+	};
+
+#endif
 

@@ -137,6 +137,8 @@ namespace luabind
 					// pops the return values from the function call
 					stack_pop pop(L, lua_gettop(L) - top + m_params);
 
+#ifndef LUABIND_NO_ERROR_CHECKING
+
 					if (converter.match(L, LUABIND_DECORATE_TYPE(Ret), -1) < 0)
 					{
 #ifndef LUABIND_NO_EXCEPTIONS
@@ -148,8 +150,10 @@ namespace luabind
 						assert(0 && "the lua function's return value could not be converted."
 									" If you want to handle the error you can use luabind::set_error_callback()");
 						std::terminate();
+
 #endif
 					}
+#endif
 					return converter.apply(L, LUABIND_DECORATE_TYPE(Ret), -1);
 				}
 
@@ -183,6 +187,8 @@ namespace luabind
 					// pops the return values from the function call
 					stack_pop pop(L, lua_gettop(L) - top + m_params);
 
+#ifndef LUABIND_NO_ERROR_CHECKING
+
 					if (converter.match(L, LUABIND_DECORATE_TYPE(Ret), -1) < 0)
 					{
 #ifndef LUABIND_NO_EXCEPTIONS
@@ -197,7 +203,7 @@ namespace luabind
 
 #endif
 					}
-
+#endif
 					return converter.apply(L, LUABIND_DECORATE_TYPE(Ret), -1);
 				}
 
@@ -317,7 +323,8 @@ namespace luabind
 
 #endif // LUABIND_CALL_FUNCTION_HPP_INCLUDED
 
-#elif BOOST_PP_ITERATION_FLAGS() == 1
+#else
+#if BOOST_PP_ITERATION_FLAGS() == 1
 
 #define LUABIND_TUPLE_PARAMS(z, n, data) const A##n *
 #define LUABIND_OPERATOR_PARAMS(z, n, data) const A##n & a##n
@@ -433,5 +440,6 @@ namespace luabind
 #undef LUABIND_TUPLE_PARAMS
 
 
+#endif
 #endif
 

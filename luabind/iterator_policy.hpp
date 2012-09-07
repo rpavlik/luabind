@@ -5,15 +5,11 @@
 #ifndef LUABIND_ITERATOR_POLICY__071111_HPP
 # define LUABIND_ITERATOR_POLICY__071111_HPP
 
-# include <luabind/config.hpp>           // for LUABIND_ANONYMOUS_FIX
-# include <luabind/detail/convert_to_lua.hpp>  // for convert_to_lua
-# include <luabind/detail/policy.hpp>    // for index_map, etc
-
-# include <new>                          // for operator new
+# include <luabind/config.hpp>
+# include <luabind/detail/policy.hpp>
+# include <luabind/detail/convert_to_lua.hpp>
 
 namespace luabind { namespace detail {
-
-struct null_type;
 
 template <class Iterator>
 struct iterator

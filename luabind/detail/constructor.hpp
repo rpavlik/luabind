@@ -8,10 +8,8 @@
 #  define LUABIND_DETAIL_CONSTRUCTOR_081018_HPP
 
 #  include <luabind/get_main_thread.hpp>
-#  include <luabind/detail/object.hpp>
-#  ifndef LUABIND_WRAPPER_BASE_HPP_INCLUDED
-#   include <luabind/wrapper_base.hpp>
-#  endif
+#  include <luabind/object.hpp>
+#  include <luabind/wrapper_base.hpp>
 #  include <luabind/detail/inheritance.hpp>
 
 #  include <boost/preprocessor/iteration/iterate.hpp>
@@ -46,6 +44,7 @@ struct construct_aux<0, T, Pointer, Signature>
     void operator()(argument const& self_) const
     {
         object_rep* self = touserdata<object_rep>(self_);
+        class_rep* cls = self->crep();
 
         std::auto_ptr<T> instance(new T);
         inject_backref(self_.interpreter(), instance.get(), instance.get());
@@ -56,7 +55,7 @@ struct construct_aux<0, T, Pointer, Signature>
         void* storage = self->allocate(sizeof(holder_type));
 
         self->set_instance(new (storage) holder_type(
-            ptr, registered_class<T>::id, naked_ptr));
+            ptr, registered_class<T>::id, naked_ptr, cls));
     }
 };
 
@@ -91,6 +90,7 @@ struct construct_aux<N, T, Pointer, Signature>
     void operator()(argument const& self_, BOOST_PP_ENUM_BINARY_PARAMS(N,a,_)) const
     {
         object_rep* self = touserdata<object_rep>(self_);
+        class_rep* cls = self->crep();
 
         std::auto_ptr<T> instance(new T(BOOST_PP_ENUM_PARAMS(N,_)));
         inject_backref(self_.interpreter(), instance.get(), instance.get());
@@ -101,7 +101,7 @@ struct construct_aux<N, T, Pointer, Signature>
         void* storage = self->allocate(sizeof(holder_type));
 
         self->set_instance(new (storage) holder_type(
-            ptr, registered_class<T>::id, naked_ptr));
+            ptr, registered_class<T>::id, naked_ptr, cls));
     }
 };
 
