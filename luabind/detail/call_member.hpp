@@ -31,7 +31,7 @@
 #include <luabind/detail/pcall.hpp>
 #include <luabind/error.hpp>
 #include <luabind/detail/stack_utils.hpp>
-#include <luabind/detail/object.hpp> // TODO: REMOVE DEPENDENCY
+#include <luabind/object.hpp> // TODO: REMOVE DEPENDENCY
 
 #include <boost/tuple/tuple.hpp>
 
@@ -133,6 +133,8 @@ namespace luabind
 					// pops the return values from the function
 					stack_pop pop(L, lua_gettop(L) - top);
 
+#ifndef LUABIND_NO_ERROR_CHECKING
+
 					if (converter.match(L, LUABIND_DECORATE_TYPE(Ret), -1) < 0)
 					{
 						assert(lua_gettop(L) == top + 1);
@@ -147,7 +149,7 @@ namespace luabind
 						std::terminate();
 #endif
 					}
-
+#endif
 					return converter.apply(L, LUABIND_DECORATE_TYPE(Ret), -1);
 				}
 
@@ -185,6 +187,8 @@ namespace luabind
 					// pops the return values from the function
 					stack_pop pop(L, lua_gettop(L) - top);
 
+#ifndef LUABIND_NO_ERROR_CHECKING
+
 					if (converter.match(L, LUABIND_DECORATE_TYPE(Ret), -1) < 0)
 					{
 						assert(lua_gettop(L) == top + 1);
@@ -199,7 +203,7 @@ namespace luabind
 						std::terminate();
 #endif
 					}
-
+#endif
 					return converter.apply(L, LUABIND_DECORATE_TYPE(Ret), -1);
 				}
 
@@ -312,7 +316,8 @@ namespace luabind
 
 #endif // LUABIND_CALL_MEMBER_HPP_INCLUDED
 
-#elif BOOST_PP_ITERATION_FLAGS() == 1
+#else
+#if BOOST_PP_ITERATION_FLAGS() == 1
 
 #define LUABIND_TUPLE_PARAMS(z, n, data) const A##n *
 #define LUABIND_OPERATOR_PARAMS(z, n, data) const A##n & a##n
@@ -355,5 +360,6 @@ namespace luabind
 #undef LUABIND_OPERATOR_PARAMS
 #undef LUABIND_TUPLE_PARAMS
 
+#endif
 #endif
 

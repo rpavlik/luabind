@@ -13,19 +13,12 @@
 # include <boost/mpl/next.hpp>
 # include <boost/mpl/size.hpp>
 
-namespace luabind { namespace adl
-{
+namespace luabind {
 
-  class object;
-  class argument;
-  template <class Base>
-  struct table;
-
-} // namespace adl
-
-using adl::object;
-using adl::argument;
-using adl::table;
+class object;
+class argument;
+template <class Base>
+struct table;
 
 } // namespace luabind
 
@@ -33,7 +26,7 @@ namespace luabind { namespace detail {
 
 LUABIND_API std::string get_class_name(lua_State* L, type_id const& i);
 
-template <class T, class Enable = void>
+template <class T>
 struct type_to_string
 {
     static void get(lua_State* L)

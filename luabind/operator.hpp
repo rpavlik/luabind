@@ -26,7 +26,6 @@
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/apply_wrap.hpp>
-#include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/enum_trailing.hpp>
 #include <boost/preprocessor/repetition/enum_trailing_params.hpp>
 #include <boost/type_traits/is_same.hpp>
@@ -63,8 +62,6 @@ namespace luabind { namespace detail {
 #endif
     
 }} // namespace luabind
-
-#include <boost/preprocessor/iteration/iterate.hpp>
 
 namespace luabind { namespace operators {
 
@@ -177,7 +174,7 @@ namespace detail {
     };
 
     template<class Policies>
-    inline void operator_result(lua_State*, operator_void_return, Policies*)
+    inline void operator_result(lua_State* L, operator_void_return, Policies*)
     {
     }
 
@@ -345,9 +342,12 @@ namespace luabind {
 
 #undef LUABIND_BINARY_OPERATOR
 
-    /// defined in operator.cpp
-    extern LUABIND_API self_type self;
-    extern LUABIND_API const_self_type const_self;
+    namespace {
+
+        LUABIND_ANONYMOUS_FIX self_type self;
+        LUABIND_ANONYMOUS_FIX const_self_type const_self;
+
+    } // namespace unnamed
     
 } // namespace luabind
 

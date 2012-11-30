@@ -20,40 +20,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef WEAK_REF_040402_HPP
-#define WEAK_REF_040402_HPP
+#ifndef IS_INDIRECT_CONST_040211_HPP
+#define IS_INDIRECT_CONST_040211_HPP
 
-#include <luabind/config.hpp>
-
-struct lua_State;
+#include <luabind/detail/yes_no.hpp>
+#include <boost/type_traits/is_const.hpp>
+#include <boost/mpl/bool.hpp>
 
 namespace luabind {
 
-    class LUABIND_API weak_ref
+    namespace detail {
+
+    template<class T>
+    typename boost::is_const<T>::type
+    is_indirect_const_check(T(*)(), int);
+
+    template<class T>
+    typename boost::is_const<T>::type 
+    is_indirect_const_check(T*(*)(), long);
+
+    template<class T>
+    typename boost::is_const<T>::type 
+    is_indirect_const_check(T&(*)(), long);
+    
+    yes_t to_yes_no(boost::mpl::true_);
+    no_t to_yes_no(boost::mpl::false_);
+
+    } // namespace detail
+
+    // returns true for:
+    //    T = U*  is_const<U>
+    //    T = U&  is_const<U>
+    //    T = U   is_const<U>
+    template<class T>
+    struct is_indirect_const
     {
-    public:
-        weak_ref();
-        weak_ref(lua_State* main, lua_State* L, int index);
-        weak_ref(weak_ref const&);
-        ~weak_ref();
-
-        weak_ref& operator=(weak_ref const&);
-
-        void swap(weak_ref&);
-
-		// returns a unique id that no
-		// other weak ref will return
-		int id() const;
-
-        lua_State* state() const;
-        void get(lua_State* L) const;
-
-    private:
-        struct impl;
-        impl* m_impl;
+        BOOST_STATIC_CONSTANT(int, value = (
+            sizeof(
+                detail::to_yes_no(
+                    detail::is_indirect_const_check((T(*)())0, 0L)
+            ))
+         == sizeof(detail::yes_t)
+        ));
     };
 
 } // namespace luabind
 
-#endif // WEAK_REF_040402_HPP
+#endif // IS_INDIRECT_CONST_040211_HPP
 

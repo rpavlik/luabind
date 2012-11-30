@@ -26,7 +26,7 @@ void translate_derived_exception(lua_State* L, derived_std_exception const&)
     lua_pushstring(L, "derived_std_exception");
 }
 
-void raise_my_exception()
+void raise()
 {
     throw my_exception();
 }
@@ -43,7 +43,7 @@ void test_main(lua_State* L)
     register_exception_handler<my_exception>(&translate_my_exception);
 
     module(L) [
-        def("raise", &raise_my_exception),
+        def("raise", &raise),
         def("raise_derived", &raise_derived)
     ];
 

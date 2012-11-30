@@ -25,13 +25,7 @@
 #define LUABIND_DISCARD_RESULT_POLICY_HPP_INCLUDED
 
 #include <luabind/config.hpp>
-#include <luabind/detail/policy.hpp>    // for index_map, etc
-#include <luabind/detail/primitives.hpp>  // for null_type, etc
-
-#include <boost/mpl/if.hpp>             // for if_
-#include <boost/type_traits/is_same.hpp>  // for is_same
-
-#include <luabind/lua_include.hpp>
+#include <luabind/detail/policy.hpp>
 
 namespace luabind { namespace detail 
 {

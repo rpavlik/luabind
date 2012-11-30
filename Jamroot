@@ -34,7 +34,7 @@ if [ os.name ] = NT
         errors.user-error "*** LUA_PATH must be set." ;
     }
 
-    local includes = [ GLOB $(LUA_PATH)/include $(LUA_PATH)/src : lua.h ] ;
+    local includes = [ GLOB $(LUA_PATH) $(LUA_PATH)/include $(LUA_PATH)/src : lua.h ] ;
 
     if ! $(includes)
     {
@@ -47,12 +47,12 @@ if [ os.name ] = NT
 
     if [ GLOB $(LUA_PATH) : lib ]
     {
-        lib lua : : <link>static <name>lua5.1 <search>$(LUA_PATH)/lib/static : : <include>$(includes) ;
-        lib lua : : <link>shared <name>lua5.1 <search>$(LUA_PATH)/lib : : <include>$(includes) ;
+        lib lua : : <link>static <name>lua51 <search>$(LUA_PATH)/lib/static : : <include>$(includes) ;
+        lib lua : : <link>shared <name>lua51 <search>$(LUA_PATH)/lib : : <include>$(includes) ;
     }
-    else if [ GLOB $(LUA_PATH) : lua5.1.dll ]
+    else if [ GLOB $(LUA_PATH) : lua51.dll ]
     {
-        lib lua : : <name>lua5.1 <search>$(LUA_PATH) : : <include>$(includes) ;
+        lib lua : : <name>lua51 <search>$(LUA_PATH) : : <include>$(includes) ;
     }
 }
 else if [ os.name ] in LINUX MACOSX FREEBSD

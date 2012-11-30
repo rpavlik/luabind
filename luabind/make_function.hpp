@@ -6,8 +6,9 @@
 # define LUABIND_MAKE_FUNCTION_081014_HPP
 
 # include <luabind/config.hpp>
-# include <luabind/detail/object.hpp>
+# include <luabind/object.hpp>
 # include <luabind/detail/call.hpp>
+# include <luabind/detail/compute_score.hpp>
 # include <luabind/detail/deduce_signature.hpp>
 # include <luabind/detail/format_signature.hpp>
 

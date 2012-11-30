@@ -17,15 +17,10 @@
 #  include <boost/preprocessor/repetition/enum_params.hpp>
 #  include <boost/preprocessor/repetition/enum_trailing_params.hpp>
 
-#include <luabind/lua_state_fwd.hpp>
-
 namespace luabind {
 
 namespace detail
 {
-
-  struct invoke_context;
-  struct function_object;
 
   template <class Signature, class F>
   struct tagged_function
@@ -83,7 +78,7 @@ tag_function(F f)
 template <class R BOOST_PP_ENUM_TRAILING_PARAMS(N, class A)>
 struct signature_from_function<R(BOOST_PP_ENUM_PARAMS(N, A))>
 {
-    typedef BOOST_PP_CAT(boost::mpl::vector, NPLUS1)<
+    typedef BOOST_PP_CAT(mpl::vector, NPLUS1)<
         R BOOST_PP_ENUM_TRAILING_PARAMS(N, A)
     > type;
 };
