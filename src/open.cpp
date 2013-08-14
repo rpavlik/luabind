@@ -144,6 +144,17 @@ namespace
         lua_pushcclosure(L, &deprecated_super, 0);
         lua_setglobal(L, "super");
 
+        //Create the package table
+        lua_newtable(L); //Create a blank table
+        lua_pushstring(L, "package"); //Push the string "package" onto the stack
+        lua_pushvalue(L, -2); //Copy the blank table for settable
+        lua_settable(L, LUA_GLOBALSINDEX); //Set globals["package"] = new table
+
+        //Create the preload table
+        lua_pushstring(L, "preload");
+        lua_newtable(L); //New blank table
+        lua_settable(L, -3); //Set package["preload"] to the new table
+
         set_package_preload(L, "luabind.function_introspection", &bind_function_introspection);
     }
 
