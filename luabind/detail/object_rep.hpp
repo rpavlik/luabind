@@ -73,14 +73,14 @@ namespace luabind { namespace detail
 		{
 			if (size <= 32)
 				return &m_instance_buffer;
-			return std::malloc(size);
+			return malloc(size);
 		}
 
 		void deallocate(void* storage)
 		{
 			if (storage == &m_instance_buffer)
 				return;
-			std::free(storage);
+			free(storage);
 		}
 
 	private:
