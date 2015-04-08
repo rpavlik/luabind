@@ -23,6 +23,10 @@ if(NOT Boost_FOUND)
 	find_package(Boost REQUIRED)
 endif()
 
+if(LUA_DIR)
+	set(ENV{LUA_DIR} "${LUA_DIR}")
+endif()
+
 if(NOT LUA_FOUND AND NOT LUA51_FOUND)
 	find_package(Lua51 REQUIRED)
 	set(LUA_INCLUDE_DIRS "${LUA_INCLUDE_DIR}")
