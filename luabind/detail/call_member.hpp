@@ -33,6 +33,7 @@
 #include <luabind/detail/stack_utils.hpp>
 #include <luabind/detail/object.hpp> // TODO: REMOVE DEPENDENCY
 
+#include <boost/config.hpp> // BOOST_NOEXCEPT_IF
 #include <boost/tuple/tuple.hpp>
 
 #include <boost/preprocessor/control/if.hpp>
@@ -70,7 +71,7 @@ namespace luabind
 					rhs.m_called = true;
 				}
 
-				~proxy_member_caller()
+				~proxy_member_caller() BOOST_NOEXCEPT_IF(false)
 				{
 					if (m_called) return;
 
@@ -233,7 +234,7 @@ namespace luabind
 					rhs.m_called = true;
 				}
 
-				~proxy_member_void_caller()
+				~proxy_member_void_caller() BOOST_NOEXCEPT_IF(false)
 				{
 					if (m_called) return;
 

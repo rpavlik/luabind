@@ -28,6 +28,7 @@
 
 #include <luabind/config.hpp>
 
+#include <boost/config.hpp> // BOOST_NOEXCEPT_IF
 #include <boost/mpl/if.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/mpl/or.hpp>
@@ -79,7 +80,7 @@ namespace luabind
 					rhs.m_called = true;
 				}
 
-				~proxy_function_caller()
+				~proxy_function_caller() BOOST_NOEXCEPT_IF(false)
 				{
 					if (m_called) return;
 
@@ -243,7 +244,7 @@ namespace luabind
 					rhs.m_called = true;
 				}
 
-				~proxy_function_void_caller()
+				~proxy_function_void_caller() BOOST_NOEXCEPT_IF(false)
 				{
 					if (m_called) return;
 
