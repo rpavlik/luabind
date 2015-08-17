@@ -23,6 +23,7 @@
 #ifndef LUABIND_OBJECT_050419_HPP
 #define LUABIND_OBJECT_050419_HPP
 
+#include <boost/config.hpp> // BOOST_NOEXCEPT_IF
 #include <boost/implicit_cast.hpp> // detail::push()
 #include <boost/ref.hpp> // detail::push()
 #include <boost/mpl/bool.hpp> // value_wrapper_traits specializations
@@ -1118,7 +1119,7 @@ namespace adl
           other.value_wrapper = 0;
       }
 
-      ~call_proxy()
+      ~call_proxy() BOOST_NOEXCEPT_IF(false)
       {
           if (value_wrapper)
               call((detail::null_type*)0);
