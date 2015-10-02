@@ -690,6 +690,18 @@ struct default_converter<T,
 	>
 	: integer_converter<T> {};
 
+template <typename T>
+struct default_converter<T const,
+	typename boost::enable_if<boost::is_integral<T> >::type
+	>
+	: integer_converter<T> {};
+
+template <typename T>
+struct default_converter<T const&,
+	typename boost::enable_if<boost::is_integral<T> >::type
+	>
+	: integer_converter<T> {};
+
 // *********** converter for floating-point number types *****************
 template <typename QualifiedT>
 struct number_converter
@@ -718,6 +730,18 @@ struct number_converter
 // floating-point
 template <typename T>
 struct default_converter<T,
+	typename boost::enable_if<boost::is_floating_point<T> >::type
+	>
+	: number_converter<T> {};
+
+template <typename T>
+struct default_converter<T const,
+	typename boost::enable_if<boost::is_floating_point<T> >::type
+	>
+	: number_converter<T> {};
+
+template <typename T>
+struct default_converter<T const&,
 	typename boost::enable_if<boost::is_floating_point<T> >::type
 	>
 	: number_converter<T> {};
