@@ -116,8 +116,8 @@ namespace luabind { namespace detail
 		static int match(lua_State* L, by_reference<T>, int index)
 		{
 			typedef typename find_conversion_policy<1, Policies>::type converter_policy;
-			typedef typename mpl::apply_wrap2<converter_policy,T,lua_to_cpp>::type converter;
-			return converter::match(L, LUABIND_DECORATE_TYPE(T), index);
+			typename mpl::apply_wrap2<converter_policy,T,lua_to_cpp>::type converter;
+			return converter.match(L, LUABIND_DECORATE_TYPE(T), index);
 		}
 
 		template<class T>
@@ -154,8 +154,8 @@ namespace luabind { namespace detail
 		static int match(lua_State* L, by_pointer<T>, int index)
 		{
 			typedef typename find_conversion_policy<1, Policies>::type converter_policy;
-			typedef typename mpl::apply_wrap2<converter_policy,T,lua_to_cpp>::type converter;
-			return converter::match(L, LUABIND_DECORATE_TYPE(T), index);
+			typename mpl::apply_wrap2<converter_policy,T,lua_to_cpp>::type converter;
+			return converter.match(L, LUABIND_DECORATE_TYPE(T), index);
 		}
 
 		template<class T>
